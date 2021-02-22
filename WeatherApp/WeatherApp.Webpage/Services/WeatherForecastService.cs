@@ -21,7 +21,8 @@ namespace WeatherApp.WebSite.Services
 
         public IList<WeatherForecast> GetForecasts(string city)
         {
-            string urlParameters = $"appid={_apiKey}&q={city}&units=metric";
+            //string urlParameters = $"appid={_apiKey}&q={city}&units=metric";
+            string urlParameters = $"appid={_apiKey}&q=budapest&units=metric";
             string url = _baseUrl + urlParameters;
 
             string jsonString = "";

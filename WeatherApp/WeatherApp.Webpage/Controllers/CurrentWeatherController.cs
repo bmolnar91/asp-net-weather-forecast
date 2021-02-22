@@ -19,7 +19,7 @@ namespace WeatherApp.WebSite.Controllers
         [HttpGet("{city}")]
         public async Task<CurrentWeather> Get(string city)
         {
-            return await Task.Run(() => _currentWeatherService.GetCurrentWeather(city));
+            return await _currentWeatherService.GetCurrentWeather(city);
         }
     }
 }

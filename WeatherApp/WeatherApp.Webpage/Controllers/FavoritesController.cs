@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using WeatherApp.WebSite.Models;
 using WeatherApp.WebSite.Services.Interfaces;
 
@@ -32,12 +33,13 @@ namespace WeatherApp.WebSite.Controllers
         }
 
         [HttpGet("cities")]
-        public CurrentWeather[] GetFavorites()
+        public async Task<CurrentWeather[]> GetFavorites()
         {
             IList<CurrentWeather> favorites = new List<CurrentWeather>();
             foreach (var city in _favoritesRepository.Read())
             {
-                favorites.Add(_currentWeatherService.GetCurrentWeather(city));
+                var bob = await _currentWeatherService.GetCurrentWeather(city);
+                favorites.Add(bob);
             }
             return favorites.ToArray();
         }
