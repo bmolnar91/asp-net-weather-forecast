@@ -22,7 +22,7 @@ namespace WeatherApp.WebSite
         }
 
         [Test]
-        public async Task GetSuggestionsTest()
+        public async Task GetSuggestionsAsyncTest()
         {
             string input = "bud";
 
@@ -39,7 +39,7 @@ namespace WeatherApp.WebSite
 
             suggestionList.Add(location);
 
-            _autocompleteService.GetSuggestions(input).Returns(suggestionList);
+            _autocompleteService.GetSuggestionsAsync(input).Returns(suggestionList);
 
             var result = await _autocompleteController.Get(input);
 

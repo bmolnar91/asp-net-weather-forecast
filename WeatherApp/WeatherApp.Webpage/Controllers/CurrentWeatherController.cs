@@ -17,7 +17,7 @@ namespace WeatherApp.WebSite.Controllers
         }
 
         [HttpGet("{city}")]
-        public async Task<CurrentWeather> GetAsync(string city)
+        public async Task<CurrentWeather> GetCurrentWeatherAsync(string city)
         {
             return await _currentWeatherService.GetCurrentWeatherAsync(city);
         }

@@ -20,13 +20,13 @@ namespace WeatherApp.WebSite.Controllers
         }
 
         [HttpGet("observations")]
-        public async Task<IEnumerable<Observation>> GetAllObservations()
+        public async Task<IEnumerable<Observation>> GetAllObservationsAsync()
         {
             return await _observationRepository.GetObservationsAsync();
         }
 
         [HttpGet("{city}")]
-        public async Task<IEnumerable<Observation>> GetObservationsByCity(string city)
+        public async Task<IEnumerable<Observation>> GetObservationsByCityAsync(string city)
         {
             var observations = await _observationRepository.GetObservationsAsync();
             var observationsByCity =
@@ -39,7 +39,7 @@ namespace WeatherApp.WebSite.Controllers
 
         [HttpPost("{city}")]
         [Consumes("application/x-www-form-urlencoded")]
-        public async Task PostAsync([FromForm] IFormCollection formCollection, string city)
+        public async Task AddObservationAsync([FromForm] IFormCollection formCollection, string city)
         {
             string userName = formCollection[nameof(userName)];
             string description = formCollection[nameof(description)];
@@ -49,12 +49,10 @@ namespace WeatherApp.WebSite.Controllers
                 City =        city,
                 UserName =    userName,
                 Description = description,
-                Timestamp = DateTime.Now,
+                Timestamp =   DateTime.Now,
             };
 
             await _observationRepository.AddObservationAsync(obs);
         }
-
-        // TODO post, put, delete http requests
     }
 }

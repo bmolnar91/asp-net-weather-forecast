@@ -19,7 +19,7 @@ namespace WeatherApp.WebSite.Controllers
         }
 
         [HttpGet("{city}")]
-        public async Task<IList<WeatherForecast>> GetAsync(string city)
+        public async Task<IList<WeatherForecast>> GetForecastsAsync(string city)
         {
             return await _weatherForecastService.GetForecastsAsync(city);
         }
