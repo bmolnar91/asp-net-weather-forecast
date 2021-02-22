@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WeatherApp.WebSite.Models;
 
 namespace WeatherApp.WebSite.Migrations
 {
     [DbContext(typeof(ObservationsContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20210222155139_RefactoredModelsMigration")]
+    partial class RefactoredModelsMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -49,7 +49,7 @@ namespace WeatherApp.WebSite.Controllers
 
             Observation obs = new Observation()
             {
-                TimeStamp =   DateTime.Now,
+                Timestamp =   DateTime.Now,
                 City =        city,
                 UserName =    userName,
                 Description = description,

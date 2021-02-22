@@ -30,7 +30,7 @@ namespace WeatherApp.WebSite
 
             var location = new Location()
             {
-                ID = default,
+                Id = default,
                 City = "Budapest",
                 State = default,
                 Country = "Hungary",

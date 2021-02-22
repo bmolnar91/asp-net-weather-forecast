@@ -4,7 +4,7 @@ namespace WeatherApp.WebSite.Models
 {
     public class Location
     {
-        public long ID { get; set; }
+        public long Id { get; set; }
         public string City { get; set; }
         public string State { get; set; }
         public string Country { get; set; }
@@ -13,7 +13,7 @@ namespace WeatherApp.WebSite.Models
         public override bool Equals(object obj)
         {
             return obj is Location location &&
-                   ID == location.ID &&
+                   Id == location.Id &&
                    City == location.City &&
                    State == location.State &&
                    Country == location.Country &&
@@ -22,7 +22,7 @@ namespace WeatherApp.WebSite.Models
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(ID, City, State, Country, CountryCode);
+            return HashCode.Combine(Id, City, State, Country, CountryCode);
         }
     }
 }
