@@ -7,7 +7,7 @@ namespace WeatherApp.WebSite.Models
     {
         IList<string> _favorites = new List<string>() { "Vienna", "Vancouver" };
 
-        public void Create(string city)
+        public void AddFavorite(string city)
         {
             if (!_favorites.Contains(city))
             {
@@ -15,7 +15,7 @@ namespace WeatherApp.WebSite.Models
             }
         }
 
-        public void Delete(string city)
+        public void DeleteFavorite(string city)
         {
             if (_favorites.Contains(city))
             {
@@ -23,7 +23,7 @@ namespace WeatherApp.WebSite.Models
             }
         }
 
-        ICollection<string> IFavoritesRepository.Read()
+        ICollection<string> IFavoritesRepository.GetFavorites()
         {
             return _favorites;
         }

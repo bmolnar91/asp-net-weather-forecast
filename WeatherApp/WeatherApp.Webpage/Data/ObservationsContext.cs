@@ -15,13 +15,13 @@ namespace WeatherApp.WebSite.Models
         {
             modelBuilder.Entity<Observation>().HasData(
             new Observation
-                {
-                    ID = 1,
-                    City = "Budapest",
-                    TimeStamp = new DateTime(2020, 11, 14, 9, 28, 0),
-                    UserName = "User",
-                    Description = "It is very hot and sunny here"
-                },
+            {
+                ID = 1,
+                City = "Budapest",
+                TimeStamp = new DateTime(2020, 11, 14, 9, 28, 0),
+                UserName = "User",
+                Description = "It is very hot and sunny here"
+            },
             new Observation
             {
                 ID = 2,

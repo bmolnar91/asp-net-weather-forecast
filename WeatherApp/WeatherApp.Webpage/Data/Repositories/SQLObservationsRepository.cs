@@ -13,22 +13,22 @@ namespace WeatherApp.WebSite.Models
             _context = context;
         }
 
-        public async Task CreateAsync(Observation observation)
+        public async Task AddObservationAsync(Observation observation)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<Observation>> ReadAsync()
+        public async Task<IEnumerable<Observation>> GetObservationsAsync()
         {
             return _context.Observations;
         }
 
-        public async Task UpdateAsync(long observationId)
+        public async Task UpdateObservationAsync(long observationId)
         {
             throw new NotImplementedException();
         }
 
-        public async Task DeleteAsync(long observationId)
+        public async Task DeleteObservationAsync(long observationId)
         {
             throw new NotImplementedException();
         }

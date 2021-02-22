@@ -5,9 +5,9 @@ namespace WeatherApp.WebSite.Models
 {
     public interface IAsyncObservationRepository
     {
-        Task CreateAsync(Observation observation);
-        Task<IEnumerable<Observation>> ReadAsync();
-        Task UpdateAsync(long observationId);
-        Task DeleteAsync(long observationId);
+        Task AddObservationAsync(Observation observation);
+        Task<IEnumerable<Observation>> GetObservationsAsync();
+        Task UpdateObservationAsync(long observationId);
+        Task DeleteObservationAsync(long observationId);
     }
 }

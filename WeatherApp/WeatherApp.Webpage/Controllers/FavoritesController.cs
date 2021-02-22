@@ -23,20 +23,20 @@ namespace WeatherApp.WebSite.Controllers
         [HttpPost("{city}")]
         public void Post(string city)
         {
-            _favoritesRepository.Create(city);
+            _favoritesRepository.AddFavorite(city);
         }
 
         [HttpDelete("{city}")]
         public void Delete(string city)
         {
-            _favoritesRepository.Delete(city);
+            _favoritesRepository.DeleteFavorite(city);
         }
 
         [HttpGet("cities")]
         public async Task<CurrentWeather[]> GetFavorites()
         {
             var favorites = (IList<CurrentWeather>)new List<CurrentWeather>();
-            foreach (var city in _favoritesRepository.Read())
+            foreach (var city in _favoritesRepository.GetFavorites())
             {
                 var currentWeather = await _currentWeatherService.GetCurrentWeatherAsync(city);
                 favorites.Add(currentWeather);

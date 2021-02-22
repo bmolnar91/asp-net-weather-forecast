@@ -34,7 +34,7 @@ namespace WeatherApp.WebSite.Models
             }
         };
 
-        public void Create(Observation observation)
+        public void AddObservation(Observation observation)
         {
             long newID = _observations.Select(observation => observation.ID).Max() + 1;
             observation.ID = newID;
@@ -42,19 +42,19 @@ namespace WeatherApp.WebSite.Models
            _observations.Add(observation);
         }
 
-        public IEnumerable<Observation> Read()
+        public IEnumerable<Observation> GetObservations()
         {
             return _observations;
         }
 
         // TODO
-        public void Update(long observationId)
+        public void DeleteObservation(long observationId)
         {
             throw new NotImplementedException();
         }
 
         // TODO
-        public void Delete(long observationId)
+        public void UpdateObservation(long observationId)
         {
             throw new NotImplementedException();
         }

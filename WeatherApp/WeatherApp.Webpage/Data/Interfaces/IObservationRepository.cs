@@ -4,9 +4,9 @@ namespace WeatherApp.WebSite.Models
 {
     public interface IObservationRepository
     {
-        void Create(Observation observation);
-        IEnumerable<Observation> Read();
-        void Update(long observationId);
-        void Delete(long observationId);
+        void AddObservation(Observation observation);
+        IEnumerable<Observation> GetObservations();
+        void UpdateObservation(long observationId);
+        void DeleteObservation(long observationId);
     }
 }

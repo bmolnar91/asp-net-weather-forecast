@@ -7,8 +7,8 @@ namespace WeatherApp.WebSite.Models
 {
     public interface IFavoritesRepository
     {
-        void Create(string city);
-        ICollection<string> Read();
-        void Delete(string city);
+        void AddFavorite(string city);
+        ICollection<string> GetFavorites();
+        void DeleteFavorite(string city);
     }
 }

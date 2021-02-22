@@ -24,14 +24,14 @@ namespace WeatherApp.WebSite.Controllers
         [HttpGet("observations")]
         public async Task<IEnumerable<Observation>> GetAllObservations()
         {
-            var observations = await _observationRepository.ReadAsync();
+            var observations = await _observationRepository.GetObservationsAsync();
             return observations;
         }
 
         [HttpGet("{city}")]
         public async Task<IEnumerable<Observation>> GetObservationsByCity(string city)
         {
-            var observations = await _observationRepository.ReadAsync();
+            var observations = await _observationRepository.GetObservationsAsync();
             var observationsByCity =
                 from observation in observations
                 where observation.City.Equals(city)
@@ -55,7 +55,7 @@ namespace WeatherApp.WebSite.Controllers
                 Description = description,
             };
 
-            await _observationRepository.CreateAsync(obs);
+            await _observationRepository.AddObservationAsync(obs);
         }
 
         // TODO post, put, delete http requests
