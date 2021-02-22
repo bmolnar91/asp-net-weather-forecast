@@ -22,26 +22,70 @@ namespace WeatherApp.WebSite
         }
 
         [Test]
-        public async Task GetSuggestionsAsyncTest()
+        public async Task GetSuggestionsAsync_OneSuggestion_ReturnsOneLocation()
         {
-            string input = "bud";
+            var input = "budap";
 
-            ISet<Location> suggestionList = new HashSet<Location>();
+            var suggestionList = (ISet<Location>)new HashSet<Location>();
 
-            var location = new Location()
+            suggestionList.Add(new Location()
             {
-                Id = default,
-                City = "Budapest",
-                State = default,
-                Country = "Hungary",
+                Id =          default,
+                City =        "Budapest",
+                State =       default,
+                Country =     "Hungary",
                 CountryCode = "HU"
-            };
-
-            suggestionList.Add(location);
+            });
 
             _autocompleteService.GetSuggestionsAsync(input).Returns(suggestionList);
 
-            var result = await _autocompleteController.Get(input);
+            var result = await _autocompleteController.GetSuggestionsAsync(input);
+
+            Assert.AreEqual(result, suggestionList);
+        }
+
+        [Test]
+        public async Task GetSuggestionsAsync_MultipleSuggestions_ReturnsMultipleLocations()
+        {
+            var input = "zuri";
+
+            var suggestionList = (ISet<Location>)new HashSet<Location>();
+
+            suggestionList.Add(new Location()
+            {
+                Id =          default,
+                City =        "Zurich",
+                State =       default,
+                Country =     "Switzerland",
+                CountryCode = "CH"
+            });
+
+            suggestionList.Add(new Location()
+            {
+                Id =          default,
+                City =        "Zurite",
+                State =       default,
+                Country =     "Peru",
+                CountryCode = "PE"
+            });
+
+            _autocompleteService.GetSuggestionsAsync(input).Returns(suggestionList);
+
+            var result = await _autocompleteController.GetSuggestionsAsync(input);
+
+            Assert.AreEqual(result, suggestionList);
+        }
+
+        [Test]
+        public async Task GetSuggestionsAsync_ZeroSuggestion_ReturnsEmpty()
+        {
+            var input = "this location does not exist";
+
+            var suggestionList = (ISet<Location>)new HashSet<Location>();
+
+            _autocompleteService.GetSuggestionsAsync(input).Returns(suggestionList);
+
+            var result = await _autocompleteController.GetSuggestionsAsync(input);
 
             Assert.AreEqual(result, suggestionList);
         }

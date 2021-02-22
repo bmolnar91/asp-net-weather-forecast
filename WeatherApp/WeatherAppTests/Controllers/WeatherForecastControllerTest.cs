@@ -14,7 +14,6 @@ namespace WeatherApp.Tests.Controllers
         private IWeatherForecastService _weatherForecastService;
         private WeatherForecastController _weatherForecastController;
 
-
         [SetUp]
         public void Setup()
         {
@@ -23,29 +22,27 @@ namespace WeatherApp.Tests.Controllers
         }
 
         [Test]
-        public async Task GetWeatherForecastForCity()
+        public async Task GetForecastsAsync_ExistingLocation_ReturnsForecast()
         {
             string city = "Budapest";
 
-            var forecast = new List<WeatherForecast>();
+            var forecast = (IList<WeatherForecast>)new List<WeatherForecast>();
 
-            var weatherForecast = new WeatherForecast
+            forecast.Add(new WeatherForecast
             {
-                ExactDate = default(long),
-                Date = default(string),
-                Description = default(string),
-                Temp = default(double),
-                Pressure = default(int),
-                Humidity = default(int),
-                Wind = default(double),
-                Icon = default(string),
-            };
+                ExactDate =   default,
+                Date =        default,
+                Description = default,
+                Temp =        default,
+                Pressure =    default,
+                Humidity =    default,
+                Wind =        default,
+                Icon =        default,
+            });
 
-            forecast.Add(weatherForecast);
+            _weatherForecastService.GetForecastsAsync(city).Returns(forecast);
 
-            _weatherForecastService.GetForecasts(city).Returns(forecast);
-
-            var result = await _weatherForecastController.Get(city);
+            var result = await _weatherForecastController.GetForecastsAsync(city);
 
             Assert.AreEqual(result, forecast);
         }
