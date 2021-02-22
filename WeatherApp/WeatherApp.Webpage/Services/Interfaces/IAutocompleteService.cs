@@ -6,6 +6,6 @@ namespace WeatherApp.WebSite.Services
 {
     public interface IAutocompleteService
     {
-        Task<IEnumerable<Location>> GetSuggestions(string query);
+        Task<IEnumerable<Location>> GetSuggestionsAsync(string query);
     }
 }

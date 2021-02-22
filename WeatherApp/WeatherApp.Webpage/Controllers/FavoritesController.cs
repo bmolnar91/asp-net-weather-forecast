@@ -35,11 +35,11 @@ namespace WeatherApp.WebSite.Controllers
         [HttpGet("cities")]
         public async Task<CurrentWeather[]> GetFavorites()
         {
-            IList<CurrentWeather> favorites = new List<CurrentWeather>();
+            var favorites = (IList<CurrentWeather>)new List<CurrentWeather>();
             foreach (var city in _favoritesRepository.Read())
             {
-                var bob = await _currentWeatherService.GetCurrentWeather(city);
-                favorites.Add(bob);
+                var currentWeather = await _currentWeatherService.GetCurrentWeatherAsync(city);
+                favorites.Add(currentWeather);
             }
             return favorites.ToArray();
         }

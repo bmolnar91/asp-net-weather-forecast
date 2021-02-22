@@ -25,7 +25,7 @@ namespace WeatherApp.WebSite.Services
             Client = client;
         }
 
-        public async Task<IEnumerable<Location>> GetSuggestions(string query)
+        public async Task<IEnumerable<Location>> GetSuggestionsAsync(string query)
         {
             var urlParameters = $"?apikey={_apiKey}&query={query}&maxresults=5&resultType=city&language=en";
 

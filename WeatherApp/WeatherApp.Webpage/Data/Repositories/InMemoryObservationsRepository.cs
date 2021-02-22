@@ -34,27 +34,27 @@ namespace WeatherApp.WebSite.Models
             }
         };
 
-        public async Task Create(Observation observation)
+        public void Create(Observation observation)
         {
             long newID = _observations.Select(observation => observation.ID).Max() + 1;
             observation.ID = newID;
 
-            await Task.Run(() => _observations.Add(observation));
+           _observations.Add(observation);
         }
 
-        public async Task<IEnumerable<Observation>> Read()
+        public IEnumerable<Observation> Read()
         {
             return _observations;
         }
 
         // TODO
-        public async Task Delete(long observationId)
+        public void Update(long observationId)
         {
             throw new NotImplementedException();
         }
 
         // TODO
-        public async Task Update(long observationId)
+        public void Delete(long observationId)
         {
             throw new NotImplementedException();
         }

@@ -24,7 +24,7 @@ namespace WeatherApp.WebSite.Services
             Client = client;
         }
 
-        public async Task<IList<WeatherForecast>> GetForecasts(string city)
+        public async Task<IList<WeatherForecast>> GetForecastsAsync(string city)
         {
             string urlParameters = $"?appid={_apiKey}&q={city}&units=metric";
 

@@ -24,7 +24,7 @@ namespace WeatherApp.WebSite.Services
             Client = client;
         }
 
-        public async Task<CurrentWeather> GetCurrentWeather(string city)
+        public async Task<CurrentWeather> GetCurrentWeatherAsync(string city)
         {
             var urlParameters = $"?appid={_apiKey}&q={city}&units=metric";
 

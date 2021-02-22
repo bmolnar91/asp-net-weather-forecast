@@ -41,10 +41,10 @@ namespace WeatherApp.WebSite
             services.AddSingleton<IFavoritesRepository, InMemoryFavoritesRepository>();
             services.AddSingleton<IObservationRepository, InMemoryObservationsRepository>();
 
-            services.AddControllers();
-
             services.AddDbContextPool<ObservationsContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("WeatherDatabase")));
+
+            services.AddControllers();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

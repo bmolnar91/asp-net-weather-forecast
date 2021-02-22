@@ -12,26 +12,26 @@ namespace WeatherApp.WebSite.Controllers
     [Route("api/[controller]")]
     public class ObservationController : ControllerBase
     {
-        readonly IObservationRepository _observationRepository;
+        readonly IAsyncObservationRepository _observationRepository;
 
-        public ObservationController(IObservationRepository observationRepository)
+        public ObservationController(IAsyncObservationRepository observationRepository)
         {
             _observationRepository = observationRepository;
         }
 
-        public object Observation { get; private set; }
+        public Observation Observation { get; private set; }
 
         [HttpGet("observations")]
         public async Task<IEnumerable<Observation>> GetAllObservations()
         {
-            var bob = await _observationRepository.Read();
-            return bob;
+            var observations = await _observationRepository.ReadAsync();
+            return observations;
         }
 
         [HttpGet("{city}")]
         public async Task<IEnumerable<Observation>> GetObservationsByCity(string city)
         {
-            var observations = await _observationRepository.Read();
+            var observations = await _observationRepository.ReadAsync();
             var observationsByCity =
                 from observation in observations
                 where observation.City.Equals(city)
@@ -42,21 +42,20 @@ namespace WeatherApp.WebSite.Controllers
 
         [HttpPost("{city}")]
         [Consumes("application/x-www-form-urlencoded")]
-        public void Post([FromForm] IFormCollection formCollection, string city)
+        public async Task PostAsync([FromForm] IFormCollection formCollection, string city)
         {
             string userName = formCollection[nameof(userName)];
             string description = formCollection[nameof(description)];
-            //string city = formCollection[nameof(city)];
 
             Observation obs = new Observation()
             {
-                TimeStamp = DateTime.Now,
-                City = city,
-                UserName = userName,
+                TimeStamp =   DateTime.Now,
+                City =        city,
+                UserName =    userName,
                 Description = description,
             };
 
-            _observationRepository.Create(obs);
+            await _observationRepository.CreateAsync(obs);
         }
 
         // TODO post, put, delete http requests

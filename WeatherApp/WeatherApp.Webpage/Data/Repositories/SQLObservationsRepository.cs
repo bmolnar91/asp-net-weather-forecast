@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace WeatherApp.WebSite.Models
 {
-    public class SQLObservationsRepository : IObservationRepository
+    public class SQLObservationsRepository : IAsyncObservationRepository
     {
         private readonly ObservationsContext _context;
 
@@ -12,22 +12,23 @@ namespace WeatherApp.WebSite.Models
         {
             _context = context;
         }
-        public async Task Create(Observation observation)
+
+        public async Task CreateAsync(Observation observation)
         {
             throw new NotImplementedException();
         }
 
-        public async Task Delete(long observationId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<IEnumerable<Observation>> Read()
+        public async Task<IEnumerable<Observation>> ReadAsync()
         {
             return _context.Observations;
         }
 
-        public async Task Update(long observationId)
+        public async Task UpdateAsync(long observationId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task DeleteAsync(long observationId)
         {
             throw new NotImplementedException();
         }
