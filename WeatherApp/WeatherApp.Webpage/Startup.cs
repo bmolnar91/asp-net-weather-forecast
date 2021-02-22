@@ -36,11 +36,13 @@ namespace WeatherApp.WebSite
 
             services.AddHttpClient<ICurrentWeatherService, CurrentWeatherService>();
             services.AddHttpClient<IWeatherForecastService, WeatherForecastService>();
+            services.AddHttpClient<IAutocompleteService, AutocompleteService>();
 
-            services.AddSingleton<IAutocompleteService, AutocompleteService>();
             services.AddSingleton<IFavoritesRepository, InMemoryFavoritesRepository>();
             services.AddSingleton<IObservationRepository, InMemoryObservationsRepository>();
+
             services.AddControllers();
+
             services.AddDbContextPool<ObservationsContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("WeatherDatabase")));
         }

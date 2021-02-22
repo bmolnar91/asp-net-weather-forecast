@@ -4,6 +4,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Threading.Tasks;
 using WeatherApp.WebSite.Models;
 
 namespace WeatherApp.WebSite.Services
@@ -13,36 +14,28 @@ namespace WeatherApp.WebSite.Services
         readonly string _apiKey;
         readonly string _baseUrl;
 
-        public AutocompleteService(IConfiguration configuration)
+        public HttpClient Client { get; set; }
+
+        public AutocompleteService(IConfiguration configuration, HttpClient client)
         {
             _apiKey = configuration.GetValue<string>("ApiKeys:Autocomplete");
             _baseUrl = configuration.GetValue<string>("ApiBaseUrls:Autocomplete");
+
+            client.BaseAddress = new Uri(_baseUrl);
+            Client = client;
         }
 
-        public IEnumerable<Location> GetSuggestions(string query)
+        public async Task<IEnumerable<Location>> GetSuggestions(string query)
         {
-            string urlParameters = $"apikey={_apiKey}&query={query}&maxresults=5&resultType=city&language=en";
-            string url = _baseUrl + urlParameters;
+            var urlParameters = $"?apikey={_apiKey}&query={query}&maxresults=5&resultType=city&language=en";
 
-            string jsonString = "";
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri(url);
-                //HTTP GET
-                var responseTask = client.GetAsync("");
-                responseTask.Wait();
+            var response = await Client.GetAsync(urlParameters);
 
-                var result = responseTask.Result;
-                if (result.IsSuccessStatusCode)
-                {
-                    var readTask = result.Content.ReadAsStringAsync();
-                    readTask.Wait();
+            response.EnsureSuccessStatusCode();
 
-                    jsonString = readTask.Result;
-                }
-            }
+            var responseString = await response.Content.ReadAsStringAsync();
 
-            var json = JObject.Parse(jsonString);
+            var json = JObject.Parse(responseString);
             var jsonSuggestions = json.GetValue("suggestions");
 
             ISet<Location> locations = new HashSet<Location>();
@@ -57,6 +50,7 @@ namespace WeatherApp.WebSite.Services
                 };
                 locations.Add(location);
             }
+
             return locations;
         }
     }

@@ -38,14 +38,14 @@ namespace WeatherApp.WebSite.Services
 
             var currentWeather = new CurrentWeather()
             {
-                CityId = (long)json.GetValue("id"),
-                City = (string)json.GetValue("name"),
+                CityId =      (long)json.GetValue("id"),
+                City =        (string)json.GetValue("name"),
                 Description = (string)json["weather"][0]["description"],
-                Icon = (string)json["weather"][0]["icon"],
-                Humidity = (int)json.GetValue("main")["humidity"],
-                Temp = (int)json.GetValue("main")["temp"],
-                Pressure = (int)json.GetValue("main")["pressure"],
-                Wind = (double)json.GetValue("wind")["speed"]
+                Icon =        (string)json["weather"][0]["icon"],
+                Humidity =    (int)json.GetValue("main")["humidity"],
+                Temp =        (int)json.GetValue("main")["temp"],
+                Pressure =    (int)json.GetValue("main")["pressure"],
+                Wind =        (double)json.GetValue("wind")["speed"]
             };
 
             return currentWeather;
