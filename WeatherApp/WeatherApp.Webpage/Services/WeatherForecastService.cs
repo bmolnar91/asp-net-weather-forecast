@@ -36,7 +36,7 @@ namespace WeatherApp.WebSite.Services
 
             var json = JObject.Parse(responseString).GetValue("list");
 
-            IList<WeatherForecast> forecasts = new List<WeatherForecast>();
+            var forecasts = (IList<WeatherForecast>)new List<WeatherForecast>();
             foreach (var token in json)
             {
                 var weatherForecast = new WeatherForecast

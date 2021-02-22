@@ -38,7 +38,7 @@ namespace WeatherApp.WebSite.Services
             var json = JObject.Parse(responseString);
             var jsonSuggestions = json.GetValue("suggestions");
 
-            ISet<Location> locations = new HashSet<Location>();
+            var locations = (ISet<Location>)new HashSet<Location>();
             foreach (var suggestion in jsonSuggestions)
             {
                 var location = new Location()
