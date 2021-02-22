@@ -12,25 +12,25 @@ namespace WeatherApp.WebSite.Models
             {
                 Id = 1,
                 City = "Budapest",
-                Timestamp = new DateTime(2020, 11, 14, 9, 28, 0),
                 UserName = "User",
-                Description = "It is very hot and sunny here"
+                Description = "It is very hot and sunny here",
+                Timestamp = new DateTime(2020, 11, 14, 9, 28, 0),
             },
             new Observation
             {
                 Id = 2,
                 City = "Budapest",
-                Timestamp = new DateTime(2020, 10, 14, 9, 28, 0),
                 UserName = "Jane",
-                Description = "Freezing cold"
+                Description = "Freezing cold",
+                Timestamp = new DateTime(2020, 10, 14, 9, 28, 0),
             },
             new Observation
             {
                 Id = 3,
                 City = "Madrid",
-                Timestamp = new DateTime(2020, 6, 14, 9, 28, 0),
                 UserName = "Pablo",
-                Description = "Beach time!"
+                Description = "Beach time!",
+                Timestamp = new DateTime(2020, 6, 14, 9, 28, 0),
             }
         };
 

@@ -19,13 +19,10 @@ namespace WeatherApp.WebSite.Controllers
             _observationRepository = observationRepository;
         }
 
-        public Observation Observation { get; private set; }
-
         [HttpGet("observations")]
         public async Task<IEnumerable<Observation>> GetAllObservations()
         {
-            var observations = await _observationRepository.GetObservationsAsync();
-            return observations;
+            return await _observationRepository.GetObservationsAsync();
         }
 
         [HttpGet("{city}")]
@@ -49,10 +46,10 @@ namespace WeatherApp.WebSite.Controllers
 
             Observation obs = new Observation()
             {
-                Timestamp =   DateTime.Now,
                 City =        city,
                 UserName =    userName,
                 Description = description,
+                Timestamp = DateTime.Now,
             };
 
             await _observationRepository.AddObservationAsync(obs);
