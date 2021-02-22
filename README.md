@@ -14,7 +14,7 @@ The Website project contains everything needed to run the application, mainly mo
 
 **Models**:
 
-- persist data in in-memory and/or sql _repositories_ using **Entity Framework Core**
+- persist data in in-memory or SQL _repositories_ using **Entity Framework Core**
 
 **Controllers**:
 
