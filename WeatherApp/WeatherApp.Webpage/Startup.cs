@@ -42,7 +42,7 @@ namespace WeatherApp.WebSite
             services.AddSingleton<IObservationRepository, InMemoryObservationsRepository>();
 
             services.AddDbContextPool<ObservationsContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("WeatherDatabase")));
+                options.UseSqlServer(Configuration.GetConnectionString("ConnectionString")));
 
             services.AddControllers();
         }

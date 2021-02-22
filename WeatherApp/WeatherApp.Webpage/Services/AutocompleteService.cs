@@ -18,8 +18,8 @@ namespace WeatherApp.WebSite.Services
 
         public AutocompleteService(IConfiguration configuration, HttpClient client)
         {
-            _apiKey = configuration.GetValue<string>("ApiKeys:Autocomplete");
-            _baseUrl = configuration.GetValue<string>("ApiBaseUrls:Autocomplete");
+            _apiKey = configuration["WeatherApp:ServiceApiKeys:Autocomplete"];
+            _baseUrl = configuration["ApiBaseUrls:Autocomplete"];
 
             client.BaseAddress = new Uri(_baseUrl);
             Client = client;
