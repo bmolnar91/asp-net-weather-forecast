@@ -4,7 +4,7 @@
 
 Look up weather forecasts or the current weather for any location, and save favorites to track the current weather of multiple locations.
 
-This is an **ASP.NET Core web app** that provides the **backend** for the Weather App.
+This is an **ASP.NET Core web application** serving as the backend for the Weather App.
 
 ### Project structure
 
@@ -23,7 +23,7 @@ The Website project contains everything needed to run the application, mainly mo
 
 **Services**:
 
-- fetch the latest weather data from the **Openweather** API
+- fetch the latest weather data from the [Openweather API](https://openweathermap.org/)
 - deserialize models from JSON responses
 
 #### WeatherApp.Tests
