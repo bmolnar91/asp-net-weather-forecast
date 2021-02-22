@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Threading.Tasks;
 using WeatherApp.WebSite.Models;
 
 namespace WeatherApp.WebSite.Services
@@ -13,37 +13,28 @@ namespace WeatherApp.WebSite.Services
         readonly string _apiKey;
         readonly string _baseUrl;
 
-        public WeatherForecastService(IConfiguration configuration)
+        public HttpClient Client { get; set; }
+
+        public WeatherForecastService(IConfiguration configuration, HttpClient client)
         {
             _apiKey = configuration.GetValue<string>("ApiKeys:WeatherForecast");
             _baseUrl = configuration.GetValue<string>("ApiBaseUrls:WeatherForecast");
+
+            client.BaseAddress = new Uri(_baseUrl);
+            Client = client;
         }
 
-        public IList<WeatherForecast> GetForecasts(string city)
+        public async Task<IList<WeatherForecast>> GetForecasts(string city)
         {
-            //string urlParameters = $"appid={_apiKey}&q={city}&units=metric";
-            string urlParameters = $"appid={_apiKey}&q=budapest&units=metric";
-            string url = _baseUrl + urlParameters;
+            string urlParameters = $"?appid={_apiKey}&q={city}&units=metric";
 
-            string jsonString = "";
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri(url);
-                //HTTP GET
-                var responseTask = client.GetAsync("");
-                responseTask.Wait();
+            var response = await Client.GetAsync(urlParameters);
 
-                var result = responseTask.Result;
-                if (result.IsSuccessStatusCode)
-                {
-                    var readTask = result.Content.ReadAsStringAsync();
-                    readTask.Wait();
+            response.EnsureSuccessStatusCode();
 
-                    jsonString = readTask.Result;
-                }
-            }
+            var responseString = await response.Content.ReadAsStringAsync();
 
-            var json = JObject.Parse(jsonString).GetValue("list");
+            var json = JObject.Parse(responseString).GetValue("list");
 
             IList<WeatherForecast> forecasts = new List<WeatherForecast>();
             foreach (var token in json)
@@ -61,6 +52,7 @@ namespace WeatherApp.WebSite.Services
                 };
                 forecasts.Add(weatherForecast);
             }
+
             return forecasts;
         }
     }

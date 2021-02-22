@@ -34,20 +34,9 @@ namespace WeatherApp.WebSite
                                   });
             });
 
-            //services.AddHttpClient<ICurrentWeatherService, CurrentWeatherService>(c =>
-            //{
-            //    string apiKey = Configuration.GetValue<string>("ApiKeys:WeatherForecast");
-            //    string baseUrl = Configuration.GetValue<string>("ApiBaseUrls:CurrentWeather");
-
-            //    c.BaseAddress = new Uri(baseUrl);
-            //    c.DefaultRequestHeaders.Add("Accept", "application/vnd.github.v3+json");
-            //    c.DefaultRequestHeaders.Add("User-Agent", "HttpClientFactory-Sample");
-            //});
-
             services.AddHttpClient<ICurrentWeatherService, CurrentWeatherService>();
+            services.AddHttpClient<IWeatherForecastService, WeatherForecastService>();
 
-            //services.AddSingleton<ICurrentWeatherService, CurrentWeatherService>();
-            services.AddSingleton<IWeatherForecastService, WeatherForecastService>();
             services.AddSingleton<IAutocompleteService, AutocompleteService>();
             services.AddSingleton<IFavoritesRepository, InMemoryFavoritesRepository>();
             services.AddSingleton<IObservationRepository, InMemoryObservationsRepository>();
