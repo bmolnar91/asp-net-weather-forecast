@@ -4,11 +4,11 @@ using System.Threading.Tasks;
 
 namespace WeatherApp.WebSite.Models
 {
-    public class SQLObservationsRepository : IAsyncObservationRepository
+    public class SQLObservationRepository : IAsyncObservationRepository
     {
         private readonly ObservationsContext _context;
 
-        public SQLObservationsRepository(ObservationsContext context)
+        public SQLObservationRepository(ObservationsContext context)
         {
             _context = context;
         }

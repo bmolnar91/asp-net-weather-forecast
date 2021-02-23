@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace WeatherApp.WebSite.Models
 {
-    public class InMemoryObservationsRepository : IObservationRepository
+    public class InMemoryObservationRepository : IObservationRepository
     {
         readonly IList<Observation> _observations = new List<Observation>() {
             new Observation

@@ -40,7 +40,7 @@ namespace WeatherApp.WebSite
             services.AddHttpClient<IAutocompleteService, AutocompleteService>();
 
             services.AddSingleton<IFavoritesRepository, InMemoryFavoritesRepository>();
-            services.AddScoped<IAsyncObservationRepository, SQLObservationsRepository>();
+            services.AddScoped<IAsyncObservationRepository, SQLObservationRepository>();
 
             services.AddDbContextPool<ObservationsContext>(options =>
                 options.UseSqlServer(Configuration["WeatherApp:ConnectionString"]));
