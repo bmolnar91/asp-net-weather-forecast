@@ -19,15 +19,15 @@ namespace WeatherApp.WebSite.Services
         public WeatherService(IConfiguration configuration, HttpClient client)
         {
             _apiKey = configuration["WeatherApp:ServiceApiKeys:Openweathermap"];
-            _baseUrl = configuration["ApiBaseUrls:Base"];
+            _baseUrl = configuration["ApiBaseUrls:Weather"];
 
             client.BaseAddress = new Uri(_baseUrl);
             Client = client;
         }
 
-        public async Task<Weather> GetCurrentWeatherAsync(string city)
+        public async Task<CurrentWeather> GetCurrentWeatherAsync(string city)
         {
-            var urlParameters = $"/weather?appid={_apiKey}&q={city}&units=metric";
+            var urlParameters = $"weather?appid={_apiKey}&q={city}&units=metric";
 
             var response = await Client.GetAsync(urlParameters);
 
@@ -52,9 +52,9 @@ namespace WeatherApp.WebSite.Services
             return currentWeather;
         }
 
-        public async Task<IList<Weather>> GetForecastsAsync(string city)
+        public async Task<IList<WeatherForecast>> GetForecastsAsync(string city)
         {
-            string urlParameters = $"/forecast?appid={_apiKey}&q={city}&units=metric";
+            string urlParameters = $"forecast?appid={_apiKey}&q={city}&units=metric";
 
             var response = await Client.GetAsync(urlParameters);
 
@@ -64,7 +64,7 @@ namespace WeatherApp.WebSite.Services
 
             var json = JObject.Parse(responseString).GetValue("list");
 
-            var forecasts = (IList<Weather>)new List<Weather>();
+            var forecasts = (IList<WeatherForecast>)new List<WeatherForecast>();
             foreach (var token in json)
             {
                 var weatherForecast = new WeatherForecast

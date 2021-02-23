@@ -6,12 +6,12 @@ using WeatherApp.WebSite.Services.Interfaces;
 namespace WeatherApp.WebSite.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    //[Route("api/[controller]")]
     public class CurrentWeatherController : ControllerBase
     {
-        readonly ICurrentWeatherService _currentWeatherService;
+        readonly IWeatherService _currentWeatherService;
 
-        public CurrentWeatherController(ICurrentWeatherService currentWeatherService)
+        public CurrentWeatherController(IWeatherService currentWeatherService)
         {
             _currentWeatherService = currentWeatherService;
         }

@@ -4,16 +4,17 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using WeatherApp.WebSite.Models;
 using WeatherApp.WebSite.Services;
+using WeatherApp.WebSite.Services.Interfaces;
 
 namespace WeatherApp.WebSite.Controllers
 {
-    [Route("api/[controller]")]
+    //[Route("api/[controller]")]
     [ApiController]
     public class WeatherForecastController : ControllerBase
     {
-        private readonly IWeatherForecastService _weatherForecastService;
+        private readonly IWeatherService _weatherForecastService;
 
-        public WeatherForecastController(IWeatherForecastService weatherForecastService)
+        public WeatherForecastController(IWeatherService weatherForecastService)
         {
             _weatherForecastService = weatherForecastService;
         }

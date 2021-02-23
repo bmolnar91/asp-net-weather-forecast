@@ -6,7 +6,7 @@ namespace WeatherApp.WebSite.Services.Interfaces
 {
     public interface IWeatherService
     {
-        Task<Weather> GetCurrentWeatherAsync(string city);
-        Task<IList<Weather>> GetForecastsAsync(string city);
+        Task<CurrentWeather> GetCurrentWeatherAsync(string city);
+        Task<IList<WeatherForecast>> GetForecastsAsync(string city);
     }
 }

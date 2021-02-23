@@ -47,13 +47,11 @@ namespace WeatherApp.WebSite.Models
             return _observations;
         }
 
-        // TODO
         public void DeleteObservation(long observationId)
         {
             throw new NotImplementedException();
         }
 
-        // TODO
         public void UpdateObservation(long observationId)
         {
             throw new NotImplementedException();

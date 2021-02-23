@@ -11,17 +11,17 @@ namespace WeatherApp.WebSite.Controllers
     [Route("api/[controller]")]
     public class FavoritesController : ControllerBase
     {
-        readonly ICurrentWeatherService _currentWeatherService;
-        IFavoritesRepository _favoritesRepository;
+        readonly IWeatherService _currentWeatherService;
+        readonly IFavoritesRepository _favoritesRepository;
 
-        public FavoritesController(ICurrentWeatherService currentWeatherService, IFavoritesRepository favoritesRepository)
+        public FavoritesController(IWeatherService weatherService, IFavoritesRepository favoritesRepository)
         {
-            _currentWeatherService = currentWeatherService;
+            _currentWeatherService = weatherService;
             _favoritesRepository = favoritesRepository;
         }
 
         [HttpGet("cities")]
-        public async Task<CurrentWeather[]> GetFavoritesAsync()
+        public async Task<IList<CurrentWeather>> GetFavoritesAsync()
         {
             var favorites = (IList<CurrentWeather>)new List<CurrentWeather>();
             foreach (var city in _favoritesRepository.GetFavorites())
@@ -30,7 +30,7 @@ namespace WeatherApp.WebSite.Controllers
                 favorites.Add(currentWeather);
             }
 
-            return favorites.ToArray();
+            return favorites;
         }
 
         [HttpPost("{city}")]
