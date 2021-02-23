@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace WeatherApp.WebSite.Models
 {
     public class Location
     {
+        public long Id { get; set; }
         public string City { get; set; }
         public string State { get; set; }
         public string Country { get; set; }
@@ -15,6 +13,7 @@ namespace WeatherApp.WebSite.Models
         public override bool Equals(object obj)
         {
             return obj is Location location &&
+                   Id == location.Id &&
                    City == location.City &&
                    State == location.State &&
                    Country == location.Country &&
@@ -23,7 +22,7 @@ namespace WeatherApp.WebSite.Models
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(City, State, Country, CountryCode);
+            return HashCode.Combine(Id, City, State, Country, CountryCode);
         }
     }
 }

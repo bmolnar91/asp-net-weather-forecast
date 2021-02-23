@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Net.Http;
+using System.Threading.Tasks;
 using WeatherApp.WebSite.Models;
 using WeatherApp.WebSite.Services.Interfaces;
 
@@ -9,49 +10,44 @@ namespace WeatherApp.WebSite.Services
 {
     public class CurrentWeatherService : ICurrentWeatherService
     {
-        const string API_KEY = "3c850b0463346d2fffad82b66d5eb561";
+        readonly string _apiKey;
+        readonly string _baseUrl;
 
-        public CurrentWeatherService(IWebHostEnvironment webHostEnvironment)
+        public HttpClient Client { get; set; }
+
+        public CurrentWeatherService(IConfiguration configuration, HttpClient client)
         {
-            WebHostEnvironment = webHostEnvironment;
+            _apiKey = configuration["WeatherApp:ServiceApiKeys:Openweathermap"];
+            _baseUrl = configuration["ApiBaseUrls:CurrentWeather"];
+
+            client.BaseAddress = new Uri(_baseUrl);
+            Client = client;
         }
 
-        public IWebHostEnvironment WebHostEnvironment { get; }
-
-        public CurrentWeather GetCurrentWeather(string city)
+        public async Task<CurrentWeather> GetCurrentWeatherAsync(string city)
         {
-            string jsonString = "";
-            string url = $"https://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_KEY}&units=metric";
+            var urlParameters = $"?appid={_apiKey}&q={city}&units=metric";
 
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri(url);
-                //HTTP GET
-                var responseTask = client.GetAsync("");
-                responseTask.Wait();
+            var response = await Client.GetAsync(urlParameters);
 
-                var result = responseTask.Result;
-                if (result.IsSuccessStatusCode)
-                {
-                    var readTask = result.Content.ReadAsStringAsync();
-                    readTask.Wait();
+            response.EnsureSuccessStatusCode();
 
-                    jsonString = readTask.Result;
-                }
-            }
+            var responseString = await response.Content.ReadAsStringAsync();
 
-            var json = JObject.Parse(jsonString);
+            var json = JObject.Parse(responseString);
+
             var currentWeather = new CurrentWeather()
             {
-                ID = Convert.ToInt64(json.GetValue("id")),
-                City = json.GetValue("name").ToString(),
+                CityId =      (long)json.GetValue("id"),
+                City =        (string)json.GetValue("name"),
                 Description = (string)json["weather"][0]["description"],
-                Icon = (string)json["weather"][0]["icon"],
-                Humidity = Convert.ToInt32(json.GetValue("main")["humidity"]),
-                Temp = Convert.ToInt32(json.GetValue("main")["temp"]),
-                Pressure = Convert.ToInt32(json.GetValue("main")["pressure"]),
-                Wind = Convert.ToDouble((json.GetValue("wind")["speed"]))
+                Icon =        (string)json["weather"][0]["icon"],
+                Humidity =    (int)json.GetValue("main")["humidity"],
+                Temp =        (int)json.GetValue("main")["temp"],
+                Pressure =    (int)json.GetValue("main")["pressure"],
+                Wind =        (double)json.GetValue("wind")["speed"]
             };
+
             return currentWeather;
         }
     }

@@ -1,62 +1,55 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Threading.Tasks;
 using WeatherApp.WebSite.Models;
 
 namespace WeatherApp.WebSite.Services
 {
-    public class WeatherForecastService
+    public class WeatherForecastService : IWeatherForecastService
     {
-        const string API_KEY = "3c850b0463346d2fffad82b66d5eb561";
+        readonly string _apiKey;
+        readonly string _baseUrl;
 
-        public WeatherForecastService(IWebHostEnvironment webHostEnvironment)
+        public HttpClient Client { get; set; }
+
+        public WeatherForecastService(IConfiguration configuration, HttpClient client)
         {
-            WebHostEnvironment = webHostEnvironment;
+            _apiKey = configuration["WeatherApp:ServiceApiKeys:Openweathermap"];
+            _baseUrl = configuration["ApiBaseUrls:WeatherForecast"];
+
+            client.BaseAddress = new Uri(_baseUrl);
+            Client = client;
         }
 
-        public IWebHostEnvironment WebHostEnvironment { get; }
-
-        public IList<WeatherForecast> GetForecasts(string city)
+        public async Task<IList<WeatherForecast>> GetForecastsAsync(string city)
         {
-            string url = $"https://api.openweathermap.org/data/2.5/forecast?appid={API_KEY}&units=metric&q={city}";
-            string jsonString = "";
+            string urlParameters = $"?appid={_apiKey}&q={city}&units=metric";
 
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri(url);
-                //HTTP GET
-                var responseTask = client.GetAsync("");
-                responseTask.Wait();
+            var response = await Client.GetAsync(urlParameters);
 
-                var result = responseTask.Result;
-                if (result.IsSuccessStatusCode)
-                {
-                    var readTask = result.Content.ReadAsStringAsync();
-                    readTask.Wait();
+            response.EnsureSuccessStatusCode();
 
-                    jsonString = readTask.Result;
-                }
-            }
+            var responseString = await response.Content.ReadAsStringAsync();
 
-            var json = JObject.Parse(jsonString).GetValue("list");
-            List<WeatherForecast> forecasts = new List<WeatherForecast>();
+            var json = JObject.Parse(responseString).GetValue("list");
 
-            foreach(var token in json)
+            var forecasts = (IList<WeatherForecast>)new List<WeatherForecast>();
+            foreach (var token in json)
             {
                 var weatherForecast = new WeatherForecast
                 {
-                    ExactDate = Convert.ToInt64(token["dt"]),
-                    Date = Convert.ToString(token["dt_txt"]),
-                    Description = Convert.ToString(token["weather"][0]["description"]),
-                    Temp = Convert.ToDouble(token["main"]["temp"]),
-                    Pressure = Convert.ToInt32(token["main"]["pressure"]),
-                    Humidity = Convert.ToInt32(token["main"]["humidity"]),
-                    Wind = Convert.ToDouble(token["wind"]["speed"]),
-                    Icon = Convert.ToString(token["weather"][0]["icon"]),
+                    ExactDate =   (int)token["dt"],
+                    Date =        (string)token["dt_txt"],
+                    Description = (string)token["weather"][0]["description"],
+                    Temp =        (double)token["main"]["temp"],
+                    Pressure =    (int)token["main"]["pressure"],
+                    Humidity =    (int)token["main"]["humidity"],
+                    Wind =        (double)token["wind"]["speed"],
+                    Icon =        (string)token["weather"][0]["icon"],
                 };
-
                 forecasts.Add(weatherForecast);
             }
 

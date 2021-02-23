@@ -6,6 +6,8 @@ using Microsoft.Extensions.Hosting;
 using WeatherApp.WebSite.Models;
 using WeatherApp.WebSite.Services;
 using WeatherApp.WebSite.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace WeatherApp.WebSite
 {
@@ -32,10 +34,16 @@ namespace WeatherApp.WebSite
                                   });
             });
 
-            services.AddTransient<ICurrentWeatherService, CurrentWeatherService>();
-            services.AddTransient<WeatherForecastService, WeatherForecastService>();
-            services.AddTransient<AutocompleteService, AutocompleteService>();
-            services.AddSingleton<FavoriteContext, FavoriteContext>();
+            services.AddHttpClient<ICurrentWeatherService, CurrentWeatherService>();
+            services.AddHttpClient<IWeatherForecastService, WeatherForecastService>();
+            services.AddHttpClient<IAutocompleteService, AutocompleteService>();
+
+            services.AddSingleton<IFavoritesRepository, InMemoryFavoritesRepository>();
+            services.AddSingleton<IObservationRepository, InMemoryObservationsRepository>();
+
+            services.AddDbContextPool<ObservationsContext>(options =>
+                options.UseSqlServer(Configuration["WeatherApp:ConnectionString"]));
+
             services.AddControllers();
         }
 

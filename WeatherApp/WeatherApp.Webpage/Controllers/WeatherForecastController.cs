@@ -11,17 +11,17 @@ namespace WeatherApp.WebSite.Controllers
     [ApiController]
     public class WeatherForecastController : ControllerBase
     {
-        private readonly WeatherForecastService _weatherForecastService;
+        private readonly IWeatherForecastService _weatherForecastService;
 
-        public WeatherForecastController(WeatherForecastService weatherForecastService)
+        public WeatherForecastController(IWeatherForecastService weatherForecastService)
         {
             _weatherForecastService = weatherForecastService;
         }
 
         [HttpGet("{city}")]
-        public async Task<IList<WeatherForecast>> Get(string city)
+        public async Task<IList<WeatherForecast>> GetForecastsAsync(string city)
         {
-            return await Task.Run(() =>_weatherForecastService.GetForecasts(city));
+            return await _weatherForecastService.GetForecastsAsync(city);
         }
     }
 }

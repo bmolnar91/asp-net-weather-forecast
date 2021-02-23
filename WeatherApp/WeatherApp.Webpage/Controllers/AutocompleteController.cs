@@ -1,8 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using WeatherApp.WebSite.Models;
 using WeatherApp.WebSite.Services;
@@ -13,17 +10,17 @@ namespace WeatherApp.WebSite.Controllers
     [Route("api/[controller]")]
     public class AutocompleteController : ControllerBase
     {
-        private readonly AutocompleteService _autocompleteService;
+        readonly IAutocompleteService _autocompleteService;
 
-        public AutocompleteController(AutocompleteService autocompleteService)
+        public AutocompleteController(IAutocompleteService autocompleteService)
         {
             _autocompleteService = autocompleteService;
         }
 
         [HttpGet("{query}")]
-        public async Task<IEnumerable<Location>> Get(string query)
+        public async Task<IEnumerable<Location>> GetSuggestionsAsync(string query)
         {
-            return await Task.Run(() => _autocompleteService.GetSuggestions(query));
+            return await _autocompleteService.GetSuggestionsAsync(query);
         }
     }
 }

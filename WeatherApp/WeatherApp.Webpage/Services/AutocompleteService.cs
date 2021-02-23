@@ -1,63 +1,57 @@
 ﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using WeatherApp.WebSite.Models;
 
 namespace WeatherApp.WebSite.Services
 {
-    public class AutocompleteService
+    public class AutocompleteService : IAutocompleteService
     {
-        const string API_KEY = "jzxwrjVpz590MChJ0KjlrLnwg_syikNAPYB0tvSemLE";
+        readonly string _apiKey;
+        readonly string _baseUrl;
 
-        public AutocompleteService(IWebHostEnvironment webHostEnvironment)
+        public HttpClient Client { get; set; }
+
+        public AutocompleteService(IConfiguration configuration, HttpClient client)
         {
-            WebHostEnvironment = webHostEnvironment;
+            _apiKey = configuration["WeatherApp:ServiceApiKeys:Autocomplete"];
+            _baseUrl = configuration["ApiBaseUrls:Autocomplete"];
+
+            client.BaseAddress = new Uri(_baseUrl);
+            Client = client;
         }
-        
-        public IWebHostEnvironment WebHostEnvironment { get; }
 
-        public IEnumerable<Location> GetSuggestions(string query)
+        public async Task<IEnumerable<Location>> GetSuggestionsAsync(string query)
         {
-            string jsonString = "";
-            string url = $"https://autocomplete.geocoder.ls.hereapi.com/6.2/suggest.json?query={query}&maxresults=5&resultType=city&language=en&apikey={API_KEY}";
+            var urlParameters = $"?apikey={_apiKey}&query={query}&maxresults=5&resultType=city&language=en";
 
-            using (var client = new HttpClient())
+            var response = await Client.GetAsync(urlParameters);
+
+            response.EnsureSuccessStatusCode();
+
+            var responseString = await response.Content.ReadAsStringAsync();
+
+            var json = JObject.Parse(responseString);
+            var jsonSuggestions = json.GetValue("suggestions");
+
+            var locations = (ISet<Location>)new HashSet<Location>();
+            foreach (var suggestion in jsonSuggestions)
             {
-                client.BaseAddress = new Uri(url);
-                //HTTP GET
-                var responseTask = client.GetAsync("");
-                responseTask.Wait();
-
-                var result = responseTask.Result;
-                if (result.IsSuccessStatusCode)
+                var location = new Location()
                 {
-                    var readTask = result.Content.ReadAsStringAsync();
-                    readTask.Wait();
-
-                    jsonString = readTask.Result;
-                }
-            }
-
-            var json = JObject.Parse(jsonString);
-            ISet<Location> suggestionList = new HashSet<Location>();
-            var jsonSuggestion = json.GetValue("suggestions");
-
-            foreach (var element in jsonSuggestion)
-            {
-                var locationSuggestion = new Location()
-                {
-                    City = (string)element["address"]["city"],
-                    State = (string)element["address"]["state"],
-                    Country = (string)element["address"]["country"],
-                    CountryCode = (string)element["countryCode"]
+                    City =        (string)suggestion["address"]["city"],
+                    State =       (string)suggestion["address"]["state"],
+                    Country =     (string)suggestion["address"]["country"],
+                    CountryCode = (string)suggestion["countryCode"]
                 };
-                suggestionList.Add(locationSuggestion);
+                locations.Add(location);
             }
-            return suggestionList;
+
+            return locations;
         }
     }
 }
