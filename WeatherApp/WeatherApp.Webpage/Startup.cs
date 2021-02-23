@@ -1,13 +1,12 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using WeatherApp.WebSite.Models;
 using WeatherApp.WebSite.Services;
 using WeatherApp.WebSite.Services.Interfaces;
-using Microsoft.EntityFrameworkCore;
-using System;
 
 namespace WeatherApp.WebSite
 {
@@ -34,12 +33,11 @@ namespace WeatherApp.WebSite
                                   });
             });
 
-            //services.AddHttpClient<ICurrentWeatherService, CurrentWeatherService>();
-            //services.AddHttpClient<IWeatherForecastService, WeatherForecastService>();
             services.AddHttpClient<IWeatherService, WeatherService>();
             services.AddHttpClient<IAutocompleteService, AutocompleteService>();
 
             services.AddSingleton<IFavoritesRepository, InMemoryFavoritesRepository>();
+
             services.AddScoped<IAsyncObservationRepository, SQLObservationRepository>();
 
             services.AddDbContextPool<ObservationsContext>(options =>
