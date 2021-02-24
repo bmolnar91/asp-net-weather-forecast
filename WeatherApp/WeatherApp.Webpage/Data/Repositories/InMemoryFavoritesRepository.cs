@@ -15,17 +15,17 @@ namespace WeatherApp.WebSite.Models
             }
         }
 
+        ICollection<string> IFavoritesRepository.GetFavorites()
+        {
+            return _favorites;
+        }
+
         public void DeleteFavorite(string city)
         {
             if (_favorites.Contains(city))
             {
                 _favorites.Remove(city);
             }
-        }
-
-        ICollection<string> IFavoritesRepository.GetFavorites()
-        {
-            return _favorites;
         }
     }
 }
