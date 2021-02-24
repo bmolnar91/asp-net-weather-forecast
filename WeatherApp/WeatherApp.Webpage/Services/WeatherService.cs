@@ -18,7 +18,7 @@ namespace WeatherApp.WebSite.Services
 
         public WeatherService(IConfiguration configuration, HttpClient client)
         {
-            _apiKey = configuration["WeatherApp:ServiceApiKeys:Openweathermap"];
+            _apiKey = configuration["WeatherApp:ServiceApiKeys:OpenWeatherMap"];
             _baseUrl = configuration["ApiBaseUrls:Weather"];
 
             client.BaseAddress = new Uri(_baseUrl);
