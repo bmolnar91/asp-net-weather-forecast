@@ -22,5 +22,5 @@ namespace WeatherApp.WebSite.Controllers
         {
             return await _autocompleteService.GetSuggestionsAsync(query);
         }
-    }
+    }//test
 }

@@ -32,6 +32,7 @@ namespace WeatherApp.WebSite
                                       builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
                                   });
             });
+//commen//ok
 
             services.AddHttpClient<IWeatherService, WeatherService>();
             services.AddHttpClient<IAutocompleteService, AutocompleteService>();
