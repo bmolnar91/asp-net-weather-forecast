@@ -29,7 +29,7 @@ namespace WeatherApp.Webpage
                                       builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
                                   });
             });
-//comment
+//commen//ok
 
             services.AddTransient<CurrentWeatherService, CurrentWeatherService>();
             services.AddTransient<WeatherForecastService, WeatherForecastService>();
